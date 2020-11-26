@@ -1,15 +1,18 @@
 from typing import List
 import numpy as np
 from numpy import ndarray
+from numpy.core.multiarray import ndarray
 
 from functions.activation import Activation
 
 
 class Dense:
+    previous_data_shape: tuple
+    activation: str
     nodes: int
     weights: ndarray[float]
     biases: ndarray[float]
-    activation: str
+    previous_data: ndarray
 
     def __init__(self, data_length: int, nodes: int, activation: str = "relu"):
         self.activation = activation
@@ -19,6 +22,9 @@ class Dense:
     def forward_propagate(self, data_in: ndarray) -> ndarray:
         data_in = data_in.flatten()
         data_length, nodes = self.weights.shape
+
+        self.previous_data = data_in
+        self.previous_data_shape = data_in.shape
 
         # Calculates the dot product of two list like objects and adds bias
         totals = np.dot(data_in, self.weights) + self.biases
@@ -30,5 +36,5 @@ class Dense:
             output = Activation.softmax(totals)
         return output
 
-    def back_propagate(self):
+    def back_propagate(self, gradients: float, learning_rate: float):
         print("")
