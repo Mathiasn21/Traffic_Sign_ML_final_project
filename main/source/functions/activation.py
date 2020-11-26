@@ -1,19 +1,24 @@
 from math import exp
+from typing import List
+
+import numpy as np
+from numpy.core._multiarray_umath import ndarray
 
 
 class Activation:
     @staticmethod
-    def softmax(z: list):
-        z_length = len(z)
-        sigma_list = [0.] * z_length
-        for i in range(0, z_length):
-            a = exp(z[i])
-            b = 0
-            for j in range(0, z_length):
-                b += exp(z[j])
+    def softmax(totals: list) -> ndarray:
+        # Core math function for softmax activation
+        exp_array = np.exp(totals)
+        return exp_array / np.sum(exp_array, axis=0)
 
-            if b == 0:
-                raise Exception('Division by null exception.')
+    @staticmethod
+    def softmax_partial_derivative(total_c: float, total_k: float, totals: list, k: int, c: int) -> float:
+        s: ndarray = np.sum(totals)
+        exp_total_c: float = exp(total_c)
 
-            sigma_list[i] = a / b
-        return sigma_list
+        if k != c:
+            gradient = -exp_total_c * exp(total_k) * (s ** -2)
+        else:
+            gradient = (exp_total_c * (s - exp_total_c)) / (s ** -2)
+        return gradient
