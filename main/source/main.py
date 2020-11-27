@@ -13,8 +13,8 @@ from ml_models.cnn.layer.dense import Dense
 test_images = mnist.test_images()[:1000]
 test_labels = mnist.test_labels()[:1000]
 
-softmax = Dense(28 * 28 * 1, 10, activation='softmax')
-
+softmax = Dense(10, activation='softmax')
+softmax.init_weights(28 * 28 * 1)
 
 def forward(image, label):
     """

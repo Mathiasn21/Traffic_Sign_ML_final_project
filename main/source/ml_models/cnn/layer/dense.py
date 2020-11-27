@@ -1,7 +1,4 @@
-from typing import List, Type
 import numpy as np
-from numpy import ndarray
-from numpy.core._multiarray_umath import ndarray
 from numpy.core.multiarray import ndarray
 
 from functions.activation import Activation
@@ -18,17 +15,19 @@ class Dense(Layer):
     previous_data: ndarray
     learning_rate: float = .005
 
-    def __init__(self, data_length: int, nodes: int, activation: str = "relu"):
+    def __init__(self, nodes: int, activation: str = "relu"):
         self.activation = activation
-        self.weights = np.random.randn(data_length, nodes) / data_length
+        self.nodes = nodes
         self.biases = np.zeros(nodes)
+
+    def init_weights(self, data_length: int):
+        self.weights = np.random.randn(data_length, self.nodes) / data_length
+        self.weight_init = True
 
     def forward_propagate(self, data_in: ndarray) -> ndarray:
         self.previous_data_shape = data_in.shape
         data_in = data_in.flatten()
         self.previous_data = data_in
-
-        data_length, nodes = self.weights.shape
 
         # Calculates the dot product of two list like objects and add bias
         totals = np.dot(data_in, self.weights) + self.biases

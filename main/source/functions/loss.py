@@ -6,7 +6,7 @@ import numpy as np
 
 class Loss:
     @staticmethod
-    def categorical_cross_entropy(output: list, label: int):
+    def categorical_cross_entropy(output: ndarray, label: int):
         return -np.log(output[label])
 
     @staticmethod
