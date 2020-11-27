@@ -12,10 +12,10 @@ class Activation:
         return exp_array / np.sum(exp_array, axis=0)
 
     @staticmethod
-    def softmax_partial_derivative(total_c: float, total_k: float, totals: list, c: int) -> float:
-        s: ndarray = np.sum(totals)
-        exp_total_c: float = exp(total_c)
+    def softmax_partial_derivative(totals: ndarray, c: int) -> ndarray:
+        exp_totals: ndarray = np.exp(totals)
+        s: ndarray = np.sum(exp_totals)
 
-        gradients = -exp_total_c * exp(total_k) * (s ** -2)
-        gradients[c] = (exp_total_c * (s - exp_total_c)) * (s ** -2)
+        gradients = -exp_totals[c] * exp_totals * (s ** -2)
+        gradients[c] = (exp_totals[c] * (s - exp_totals[c])) * (s ** -2)
         return gradients
