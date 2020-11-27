@@ -14,7 +14,6 @@ class CNN:
                  training_features: ndarray,
                  training_labels: ndarray,
                  learning_rate: float = .005):
-
         self.training_features = training_features
         self.training_labels = training_labels
         self.test_data = test_data
@@ -23,12 +22,9 @@ class CNN:
 
     def fit(self):
         print("")
-
-        # Number of nodes must match number of classes = labels.
-        gradients = np.zeros(43)
-        gradients[label] = -1 / out[label]
         # TODO: implement method
 
     def test(self, test_features: ndarray, test_labels: ndarray):
         print("")
         # TODO: implement method
+

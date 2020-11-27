@@ -1,15 +1,16 @@
 import math
 
+from numpy.core.multiarray import ndarray
+import numpy as np
+
 
 class Loss:
     @staticmethod
-    def categorical_cross_entropy(y: list, y_hat: list):
-        y_length = len(y)
-        y_hat_length = len(y_hat)
-        if y_length != y_hat_length:
-            raise Exception('Mismatching lengths of lists.')
+    def categorical_cross_entropy(output: list, label: int):
+        return -np.log(output[label])
 
-        loss = 0
-        for i in range(0, y_length):
-            loss += y[i] * math.log(y_hat[i])
-        return -loss
+    @staticmethod
+    def gradients_categorical_cross_entropy(label: int, size: int, output: ndarray) -> ndarray:
+        gradients = np.zeros(size)
+        gradients[label] = -1 / output[label]
+        return gradients
