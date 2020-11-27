@@ -35,8 +35,8 @@ class Conv2D(Layer):
         data_h, data_w = data_in.shape
 
         output = np.zeros((data_h - (kernel_h - 1), data_w - (kernel_w - 1), self.num_filters))
-        for im_region, i, j in self.generate_regions(data_in):
-            output[i, j] = np.sum(im_region * self.filters, axis=(1, 2))
+        for region, i, j in self.generate_regions(data_in):
+            output[i, j] = np.sum(region * self.filters, axis=(1, 2))
 
         return output
 
