@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 from numpy.core.multiarray import ndarray
 
@@ -30,9 +32,9 @@ class CNN:
         layer: Layer
         out: ndarray = (image / 255) - 0.5
 
-        for layer in self.layers:
+        for i, layer in enumerate(self.layers):
             if not layer.weight_init:
-                layer.init_weights(self.calc_data_length(image.shape))
+                layer.init_weights(self.calc_data_length(out.shape))
 
             out = layer.forward_propagate(out)
 
@@ -42,33 +44,37 @@ class CNN:
 
     def back_propagation(self, initial_gradients: ndarray):
         gradients = initial_gradients
-        layer: Layer
-        for layer in self.layers:
+
+        for i in range(len(self.layers) - 1, -1, -1):
+            layer: Layer = self.layers[i]
             gradients = layer.back_propagate(gradients)
 
     def fit(self):
         for epoch in range(0, self.epochs):
-            print('Epoch: %d' % epoch)
+            print('--- Epoch: %d ---' % epoch)
             tot_loss = 0
             num_correct = 0
 
             for i, (feature, label) in enumerate(zip(self.training_features, self.training_labels)):
-                out, loss, acc = self.forward(feature, label)
-
-                # Calculate initial gradient
-                gradients = np.zeros(out.shape)
-                gradients[label] = -1 / out[label]
                 if i % 100 == 99:
                     print(
                         '[Step %d] Past 100 steps: Average Loss %.3f | Accuracy: %d%%' %
-                        (i + 1, loss / 100, num_correct)
+                        (i + 1, tot_loss / 100, num_correct)
                     )
-                    loss = 0
+                    tot_loss = 0
                     num_correct = 0
+
+                out, loss, acc = self.forward(feature, label)
+
                 tot_loss += loss
                 num_correct += acc
+                # Calculate initial gradient
+                gradients = np.zeros(out.shape)
+                gradients[label] = -1 / out[label]
+
 
                 self.back_propagation(gradients)
+
 
     def test(self, test_features: ndarray, test_labels: ndarray):
         print("")

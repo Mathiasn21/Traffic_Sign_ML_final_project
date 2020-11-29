@@ -24,12 +24,12 @@ class TestConv2D(unittest.TestCase):
         output = np.zeros((shape[0] - (3 - 1), shape[1] - (3 - 1), 2))
         filters = np.random.randn(2, 3, 3) / (np.prod(shape))
 
-        for region, i, j in conv2d.generate_regions(img):
+        for region, i, j in conv2d.generate_regions(img, (3, 3)):
             for k, kernel in enumerate(filters):
                 output[i, j, k] = np.sum(np.multiply(region, kernel))
 
         output2 = np.zeros((shape[0] - (3 - 1), shape[1] - (3 - 1), 2))
-        for region, i, j in conv2d.generate_regions(img):
+        for region, i, j in conv2d.generate_regions(img, (3, 3)):
             output2[i, j] = np.sum(region * filters, axis=(1, 2))
 
         ########################################################################
@@ -59,11 +59,6 @@ class TestConv2D(unittest.TestCase):
                 output4[i, j, k] = np.sum(np.multiply(region[:, :, k], kernel))
         ########################################################################
         print(output4.shape)
-
-        for row in output3:
-            for col in row:
-                print(col, end="\t")
-            print()
 
     def generate_regions(self, data_input: ndarray) -> ndarray:
         """

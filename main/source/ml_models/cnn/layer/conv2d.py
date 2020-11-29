@@ -10,6 +10,7 @@ class Conv2D(Layer):
     last_input: ndarray
     filters: ndarray
     generated_filters: bool = False
+    learning_rate: float = .01
     num_filters: int
     kernel_size: tuple
     padding: int
@@ -26,6 +27,7 @@ class Conv2D(Layer):
         self.padding = padding
         self.strides = strides
         self.num_filters = num_filters
+        self.weight_init = True
 
     def forward_propagate(self, data_in: ndarray) -> ndarray:
         """
@@ -43,39 +45,57 @@ class Conv2D(Layer):
         data_h, data_w = data_in.shape
 
         output = np.zeros((data_h - (kernel_h - 1), data_w - (kernel_w - 1), self.num_filters))
-        for region, i, j in self.generate_regions(data_in):
-            output[i, j] = np.sum(region * self.filters, axis=(1, 2))
+        for region, i, j in self.generate_regions(data_in, self.kernel_size):
+            for k, kernel in enumerate(self.filters):
+                output[i, j, k] = np.sum(np.multiply(region, kernel))
 
         return output
 
     def back_propagate(self, gradients: ndarray) -> ndarray:
-        print()
+        kernel_w = self.kernel_size[0]
+        kernel_h = self.kernel_size[1]
+        gradients_shape: tuple = gradients.shape
 
-    def convolve(self, image, filt) -> ndarray:
-        # TODO: Convolve image with filter
-        # Eg: out(i, j) = SUM(filter(x, y) * img(x - i, y - j), i, j)
-        kernel_h = self.kernel_size[0]
-        kernel_w = self.kernel_size[1]
-        image_h, image_w = image.shape
+        # Generates filter gradients given previous layer gradients
+        filter_gradients = np.zeros((self.num_filters, kernel_h, kernel_w))
+        for region, i, j in self.generate_regions(self.last_input, gradients_shape):
+            for k, kernel in enumerate(self.filters):
+                filter_gradients[k, i, j] = np.sum(np.multiply(region, gradients[:, :, k]))
 
-        feature_map = np.zeros((image_h - (kernel_h - 1), image_w - (kernel_w - 1), self.num_filters))
+        # Generates feature gradients given next layer gradients and rotated filters
+        rotated_filters = np.rot90(self.filters, 2, axes=(1, 2))
+        input_shape: tuple = self.last_input.shape
+        padding_d = (kernel_w - 1)
+        padding_w = gradients_shape[0] + padding_d * 2
+        padding_h = gradients_shape[1] + padding_d * 2
 
+        feature_gradients = np.zeros((input_shape[0], input_shape[1], self.num_filters))
+        altered_d_shape = np.zeros((padding_w, padding_h, self.num_filters))
+        altered_d_shape[padding_d:-padding_d, padding_d:-padding_d, :] = gradients
 
-    def generate_regions(self, data_input: ndarray) -> ndarray:
+        for region, i, j in self.generate_regions(altered_d_shape, self.kernel_size):
+            for k, kernel in enumerate(rotated_filters):
+                feature_gradients[i, j, k] = np.sum(np.multiply(region[:, :, k], kernel))
+
+        self.filters -= filter_gradients * self.learning_rate
+        return feature_gradients
+
+    def generate_regions(self, data_input: ndarray, region_shape: tuple) -> ndarray:
         """
         Generates all possible regions from input using kernel size
         Using valid padding by default.
         :param data_input:
+        :param region_shape:
         """
         shape = data_input.shape
         data_h = shape[0]
         data_w = shape[1]
-        kernel_h = self.kernel_size[0]
-        kernel_w = self.kernel_size[1]
+        region_h = region_shape[0]
+        region_w = region_shape[1]
 
-        for i in range(0, data_h - (kernel_h - 1), self.strides):
-            for j in range(0, data_w - (kernel_w - 1), self.strides):
-                region = data_input[i:(i + kernel_h), j:(j + kernel_w)]
+        for i in range(0, data_h - (region_h - 1), self.strides):
+            for j in range(0, data_w - (region_w - 1), self.strides):
+                region = data_input[i:(i + region_h), j:(j + region_w)]
                 yield region, i, j
 
     def generate_filters(self, input_depth: Union[None, int] = None):
