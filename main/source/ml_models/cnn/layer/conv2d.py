@@ -1,6 +1,6 @@
 from typing import Union
 
-from numpy.core._multiarray_umath import ndarray
+from numpy.core.multiarray import ndarray
 
 from ml_models.cnn.layer.layer import Layer
 import numpy as np
