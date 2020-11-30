@@ -1,6 +1,3 @@
-import random
-
-import mnist
 from matplotlib import pyplot as plt
 import numpy as np
 from numpy.core.multiarray import ndarray
@@ -18,14 +15,13 @@ def rbf(gamma, feature_vectors: ndarray, weights: ndarray):
     return classifiers
 
 
-num = 100
-#  = np.random.randn(number, 1)
+number = 100
+x_features = np.random.randn(number)
 
-x_features = mnist.test_images()[:100]
-y_labels = mnist.test_labels()[:100]
+y_labels = np.random.randn(number)
 
-x_features = rbf(1, x_features, weights=np.random.randn(x_features.shape[0]))
+x_features = rbf(1, x_features, weights=np.ones(x_features.shape[0]))
 
-plt.plot(y_labels, x_features, 'ro')
+plt.plot(x_features, y_labels, 'ro')
 plt.ylabel('some numbers')
 plt.show()
