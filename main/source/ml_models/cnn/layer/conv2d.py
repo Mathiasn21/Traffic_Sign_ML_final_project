@@ -79,7 +79,6 @@ class Conv2D(Layer):
 
         self.filters -= filter_gradients * self.learning_rate
         return feature_gradients
-
     def generate_regions(self, data_input: ndarray, region_shape: tuple) -> ndarray:
         """
         Generates all possible regions from input using kernel size
