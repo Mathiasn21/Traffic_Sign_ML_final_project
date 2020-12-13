@@ -1,7 +1,5 @@
-from math import exp
-
 import numpy as np
-from numpy.core._multiarray_umath import ndarray
+from numpy.core.multiarray import ndarray
 
 
 class Activation:

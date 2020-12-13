@@ -1,16 +1,14 @@
 from typing import Union
-
-from numpy.core.multiarray import ndarray
-
-from ml_models.cnn.layer.layer import Layer
 import numpy as np
+from numpy.core.multiarray import ndarray
+from ml_models.cnn.layer.layer import Layer
 
 
 class Conv2D(Layer):
     last_input: ndarray
     filters: ndarray
     generated_filters: bool = False
-    learning_rate: float = .01
+    learning_rate: float = .001
     num_filters: int
     kernel_size: tuple
     padding: int
@@ -48,7 +46,6 @@ class Conv2D(Layer):
         for region, i, j in self.generate_regions(data_in, self.kernel_size):
             for k, kernel in enumerate(self.filters):
                 output[i, j, k] = np.sum(np.multiply(region, kernel))
-
         return output
 
     def back_propagate(self, gradients: ndarray) -> ndarray:
@@ -79,12 +76,15 @@ class Conv2D(Layer):
 
         self.filters -= filter_gradients * self.learning_rate
         return feature_gradients
+
     def generate_regions(self, data_input: ndarray, region_shape: tuple) -> ndarray:
         """
+        Generator function.\n
         Generates all possible regions from input using kernel size
         Using valid padding by default.
-        :param data_input:
-        :param region_shape:
+        :rtype: ndarray: consisting of regions
+        :param data_input: data will be divided into regions
+        :param region_shape: shape describing each region
         """
         shape = data_input.shape
         data_h = shape[0]

@@ -13,7 +13,6 @@ class Kernel:
     def polynomial_kernel(x, xi, c, degree=2):
         return (sum(x * xi) + c) ** degree
 
-
     @staticmethod
     def rbf_kernel(data, x, xi):
         sigma_squared = np.var(data)
