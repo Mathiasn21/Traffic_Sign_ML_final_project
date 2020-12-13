@@ -9,7 +9,7 @@ training_images = mnist.test_images()[:1000]
 training_labels = mnist.test_labels()[:1000]
 num_labels = 10
 
-cnn = CNN(2, training_images, training_labels)
+cnn = CNN(4, training_images, training_labels)
 cnn.add(Conv2D(8, (3, 3), activation='relu'))
 cnn.add(MaxPool2d())
 cnn.add(Dense(num_labels, 'softmax'))

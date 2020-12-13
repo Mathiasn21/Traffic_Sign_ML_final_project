@@ -14,6 +14,7 @@ class MaxPool2d(Layer):
         self.strides = strides
 
     def forward_propagate(self, data_in: ndarray) -> ndarray:
+        self.last_input = data_in
         h, w, num_filters = data_in.shape
         kernel_h, kernel_w = self.kernel_size
         output = np.zeros((h // kernel_h, w // kernel_w, num_filters))
@@ -54,10 +55,10 @@ class MaxPool2d(Layer):
         :param region_shape: shape describing each region
         """
         shape = data_input.shape
-        data_h = shape[0]
-        data_w = shape[1]
         region_h = region_shape[0]
         region_w = region_shape[1]
+        data_h = shape[0] // region_h
+        data_w = shape[1] // region_w
 
         for i in range(0, data_h - (region_h - 1), self.strides):
             for j in range(0, data_w - (region_w - 1), self.strides):
