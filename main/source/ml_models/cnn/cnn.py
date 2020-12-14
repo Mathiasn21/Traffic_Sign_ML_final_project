@@ -71,7 +71,11 @@ class CNN:
                 # Calculate initial gradient
                 gradients = np.zeros(out.shape)
                 gradients[label] = -1 / out[label]
-
+                m = beta_1 * m + (1 - beta_1) * g
+                v = beta_2 * v + (1 - beta_2) * np.power(g, 2)
+                m_hat = m / (1 - np.power(beta_1, t))
+                v_hat = v / (1 - np.power(beta_2, t))
+                w = w - step_size * m_hat / (np.sqrt(v_hat) + epsilon)
 
                 self.back_propagation(gradients)
 

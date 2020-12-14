@@ -1,90 +1,49 @@
-import matplotlib.pyplot as plt
-import mnist
 import numpy as np
-import pandas as pd
-from PIL import Image
-from keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
-from keras.models import Sequential
-from keras.utils import to_categorical
-from sklearn.model_selection import train_test_split
+import mnist
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten
+from tensorflow.keras.utils import to_categorical
+from tensorflow.python.keras.layers import Dropout
 
-classes = 10
+train_images = mnist.train_images()
+train_labels = mnist.train_labels()
+test_images = mnist.test_images()
+test_labels = mnist.test_labels()
 
-data = mnist.test_images()[:1000]
-labels = mnist.test_labels()[:1000]
+# Normalize the images.
+train_images = (train_images / 255) - 0.5
+test_images = (test_images / 255) - 0.5
 
-print(data.shape, labels.shape)
-# Splitting training and testing dataset
-X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
+# Reshape the images.
+train_images = np.expand_dims(train_images, axis=3)
+test_images = np.expand_dims(test_images, axis=3)
 
-print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+num_filters = 8
+filter_size = 3
+pool_size = 2
 
-# Converting the labels into one hot encoding
-y_train = to_categorical(y_train, classes)
-y_test = to_categorical(y_test, classes)
+# Build the model.
+model = Sequential([
+    Conv2D(num_filters, filter_size, input_shape=(28, 28, 1), activation="relu"),
+    MaxPooling2D(pool_size=pool_size),
+    Dropout(rate=0.25),
+    Conv2D(16, filter_size, activation="relu"),
+    MaxPooling2D(pool_size=pool_size),
+    Flatten(),
+    Dense(10, activation='softmax'),
+])
 
-# Building the model
-model = Sequential()
-model.add(Conv2D(filters=32, kernel_size=(5, 5), activation='relu', input_shape=X_train.shape[1:]))
-model.add(Conv2D(filters=32, kernel_size=(5, 5), activation='relu'))
-model.add(MaxPool2D(pool_size=(2, 2)))
-model.add(Dropout(rate=0.25))
-model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu'))
-model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu'))
-model.add(MaxPool2D(pool_size=(2, 2)))
-model.add(Dropout(rate=0.25))
-model.add(Flatten())
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(rate=0.5))
-model.add(Dense(classes, activation='softmax'))
+# Compile the model.
+model.compile(
+  'adam',
+  loss='categorical_crossentropy',
+  metrics=['accuracy'],
+)
 
-# Compilation of the model
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-epochs = 15
-history = model.fit(X_train, y_train, batch_size=32, epochs=epochs, validation_data=(X_test, y_test))
-model.save("my_model.h5")
-
-# plotting graphs for accuracy
-plt.figure(0)
-plt.plot(history.history['accuracy'], label='training accuracy')
-plt.plot(history.history['val_accuracy'], label='val accuracy')
-plt.title('Accuracy')
-plt.xlabel('epochs')
-plt.ylabel('accuracy')
-plt.legend()
-plt.show()
-
-plt.figure(1)
-plt.plot(history.history['loss'], label='training loss')
-plt.plot(history.history['val_loss'], label='val loss')
-plt.title('Loss')
-plt.xlabel('epochs')
-plt.ylabel('loss')
-plt.legend()
-plt.show()
-
-# testing accuracy on test dataset
-
-y_test = pd.read_csv('Test.csv')
-
-labels = y_test["ClassId"].values
-imgs = y_test["Path"].values
-
-data = []
-
-for img in imgs:
-    image = Image.open(img)
-    image = image.resize((30, 30))
-    data.append(np.array(image))
-
-X_test = np.array(data)
-
-pred = model.predict_classes(X_test)
-
-# Accuracy with the test data
-from sklearn.metrics import accuracy_score
-
-print(accuracy_score(labels, pred))
-
-model.save('traffic_classifier.h5')
+# Train the model.
+model.fit(
+  train_images,
+  to_categorical(train_labels),
+  epochs=3,
+  validation_data=(test_images, to_categorical(test_labels)),
+)
