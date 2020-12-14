@@ -1,3 +1,4 @@
+import time
 from typing import Union
 import numpy as np
 from numpy.core.multiarray import ndarray
@@ -43,6 +44,7 @@ class Conv2D(Layer):
         data_h, data_w = data_in.shape
 
         output = np.zeros((data_h - (kernel_h - 1), data_w - (kernel_w - 1), self.num_filters))
+
         for region, i, j in self.generate_regions(data_in, self.kernel_size):
             for k, kernel in enumerate(self.filters):
                 output[i, j, k] = np.sum(np.multiply(region, kernel))

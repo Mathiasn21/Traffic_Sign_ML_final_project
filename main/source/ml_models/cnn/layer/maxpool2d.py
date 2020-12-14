@@ -25,12 +25,7 @@ class MaxPool2d(Layer):
         return output
 
     def back_propagate(self, gradients: ndarray) -> ndarray:
-        """
-        Performs a backward pass of the maxpool layer.
-        Returns the loss gradient for this layer's inputs.
-        - d_L_d_out is the loss gradient for this layer's outputs.
-        """
-        d_L_d_input = np.zeros(self.last_input.shape)
+        d_l_d_input = np.zeros(self.last_input.shape)
 
         for im_region, i, j in self.generate_regions(self.last_input, self.kernel_size):
             h, w, f = im_region.shape
@@ -41,9 +36,9 @@ class MaxPool2d(Layer):
                     for f2 in range(f):
                         # If this pixel was the max value, copy the gradient to it.
                         if im_region[i2, j2, f2] == amax[f2]:
-                            d_L_d_input[i * 2 + i2, j * 2 + j2, f2] = gradients[i, j, f2]
+                            d_l_d_input[i * 2 + i2, j * 2 + j2, f2] = gradients[i, j, f2]
 
-        return d_L_d_input
+        return d_l_d_input
 
     def generate_regions(self, data_input: ndarray, region_shape: tuple) -> ndarray:
         """
