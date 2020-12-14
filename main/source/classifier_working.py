@@ -21,7 +21,7 @@ for i in range(classes):
 
     for a in images:
         try:
-            image = Image.open(path + '\\' + a)
+            image: Image = Image.open(path + '\\' + a).convert('LA')
             image = image.resize((30, 30))
             image = np.array(image)
             # sim = Image.from array(image)
@@ -86,10 +86,10 @@ plt.show()
 
 # testing accuracy on test dataset
 
-y_test = pd.read_csv('Test.csv')
+y_test = pd.read_csv('C:\\Users\\Nilse\\Desktop\\archive\\Test.csv')
 
 labels = y_test["ClassId"].values
-imgs = y_test["Path"].values
+imgs = "C:\\Users\\Nilse\\Desktop\\archive\\" + y_test["Path"].values
 
 data = []
 
@@ -100,7 +100,7 @@ for img in imgs:
 
 X_test = np.array(data)
 
-pred = model.predict_classes(X_test)
+pred = model.predict(X_test)
 
 # Accuracy with the test data
 from sklearn.metrics import accuracy_score

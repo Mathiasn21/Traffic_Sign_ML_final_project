@@ -31,7 +31,7 @@ class CNN:
 
     def forward(self, image: ndarray, label):
         layer: Layer
-        out: ndarray = (image / 255) - 0.5
+        out: ndarray = image
 
         for i, layer in enumerate(self.layers):
             if not layer.weight_init:
@@ -57,14 +57,14 @@ class CNN:
             num_correct = 0
 
             # Initialize adams optimizer values
-            beta_1 = 0.1
+            beta_1 = 0.01
             beta_2 = 0.001
             epsilon = 1.E-9
             step_size = 0.0002
             v = None
             m = None
 
-            t = 0
+            t = 1
             w = 0.00000001
 
             for i, (feature, label) in enumerate(zip(self.training_features, self.training_labels)):
@@ -96,9 +96,15 @@ class CNN:
                 t += 1
                 self.back_propagation(gradients)
 
-    def test(self, test_features: ndarray, test_labels: ndarray):
-        print("")
-        # TODO: implement method
+    def predict(self, testing_data: ndarray):
+        result = np.zeros(testing_data.shape[0])
+        for i, data in enumerate(testing_data):
+            layer: Layer
+            out = data
+            for layer in self.layers:
+                out = layer.forward_propagate(out)
+            result[i] = np.argmax(out)
+        return result
 
     @staticmethod
     def calc_data_length(shape: tuple):
