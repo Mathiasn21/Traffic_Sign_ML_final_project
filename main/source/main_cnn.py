@@ -13,7 +13,7 @@ training_images = (training_images / 255) - 0.5
 
 num_labels = 10
 
-cnn = CNN(5, training_images, training_labels)
+cnn = CNN(8, training_images, training_labels)
 cnn.add(Conv2D(16, (3, 3), activation='relu'))
 cnn.add(MaxPool2d())
 cnn.add(Dense(num_labels, 'softmax'))
@@ -22,4 +22,11 @@ cnn.fit()
 joblib.dump(cnn, 'cnn_mnist.joblib')
 best_cnn = joblib.load('cnn_mnist.joblib')
 
-print("")
+cnn = CNN(8, training_images, training_labels)
+cnn.add(Conv2D(8, (3, 3), activation='relu'))
+cnn.add(MaxPool2d())
+cnn.add(Dense(num_labels, 'softmax'))
+cnn.fit()
+
+joblib.dump(cnn, 'cnn_mnist2.joblib')
+best_cnn = joblib.load('cnn_mnist2.joblib')
