@@ -18,7 +18,8 @@ class CNN:
                  epochs: int,
                  training_features: ndarray,
                  training_labels: ndarray,
-                 learning_rate: float = .005):
+                 learning_rate: float = .05):
+
         self.training_features = training_features
         self.training_labels = training_labels
         self.epochs = epochs
@@ -55,6 +56,17 @@ class CNN:
             tot_loss = 0
             num_correct = 0
 
+            # Initialize adams optimizer values
+            beta_1 = 0.1
+            beta_2 = 0.001
+            epsilon = 1.E-9
+            step_size = 0.0002
+            v = None
+            m = None
+
+            t = 0
+            w = 0.00000001
+
             for i, (feature, label) in enumerate(zip(self.training_features, self.training_labels)):
                 if i % 100 == 99:
                     print(
@@ -65,20 +77,24 @@ class CNN:
                     num_correct = 0
 
                 out, loss, acc = self.forward(feature, label)
+                if v is None:
+                    v = np.zeros(out.shape)
+                    m = np.zeros(out.shape)
 
                 tot_loss += loss
                 num_correct += acc
                 # Calculate initial gradient
                 gradients = np.zeros(out.shape)
                 gradients[label] = -1 / out[label]
-                m = beta_1 * m + (1 - beta_1) * g
-                v = beta_2 * v + (1 - beta_2) * np.power(g, 2)
-                m_hat = m / (1 - np.power(beta_1, t))
-                v_hat = v / (1 - np.power(beta_2, t))
-                w = w - step_size * m_hat / (np.sqrt(v_hat) + epsilon)
 
+                for gradient in gradients:
+                    m = beta_1 * m + (1 - beta_1) * gradient
+                    v = beta_2 * v + (1 - beta_2) * np.power(gradient, 2)
+                    m_hat = m / (1 - np.power(beta_1, t))
+                    v_hat = v / (1 - np.power(beta_2, t))
+                    w = w - step_size * m_hat / (np.sqrt(v_hat) + epsilon)
+                t += 1
                 self.back_propagation(gradients)
-
 
     def test(self, test_features: ndarray, test_labels: ndarray):
         print("")

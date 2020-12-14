@@ -9,7 +9,7 @@ class Conv2D(Layer):
     last_input: ndarray
     filters: ndarray
     generated_filters: bool = False
-    learning_rate: float = .001
+    learning_rate: float = .01
     num_filters: int
     kernel_size: tuple
     padding: int
