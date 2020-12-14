@@ -55,8 +55,8 @@ def rbf(gamma, feature_vectors: ndarray, weights: ndarray):
     return classifiers
 
 
-X, y = make_blobs(n_samples=50, centers=2, random_state=0, cluster_std=1.4)
-X, y = make_circles(100, factor=.1, noise=.1)
+X, y = make_blobs(n_samples=150, centers=2, cluster_std=1.4)
+X, y = make_circles(150, factor=.1, noise=.1)
 
 
 def test_plot(X, y, svm_model, axes, title):

@@ -12,11 +12,11 @@ from sklearn.model_selection import train_test_split
 data = []
 labels = []
 classes = 43
-cur_path = os.getcwd()
+data_path = "C:\\Users\\Nilse\\Desktop\\archive"
 
 # Retrieving the images and their labels
 for i in range(classes):
-    path = os.path.join(cur_path, 'train', str(i))
+    path = os.path.join(data_path, 'Train', str(i))
     images = os.listdir(path)
 
     for a in images:
