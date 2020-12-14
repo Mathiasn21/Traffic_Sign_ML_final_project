@@ -6,6 +6,7 @@ from sklearn import datasets
 from sklearn.datasets import make_blobs, make_circles
 
 
+# https://github.com/fbeilstein/simplest_smo_ever/blob/main/simple_svm.ipynb
 class SVM:
     def __init__(self, kernel='linear', C=10000.0, max_iter=100000, degree=3, gamma=1):
         self.kernel = {'poly': lambda x, y: np.dot(x, y.T) ** degree,
@@ -20,7 +21,7 @@ class SVM:
 
     def fit(self, X, y):
         self.X = X.copy()
-        self.y = y * 2 - 1 # shifts the label center from 0,1 to -1,1
+        self.y = y * 2 - 1  # shifts the label center from 0,1 to -1,1
         self.lambdas = np.zeros_like(self.y, dtype=float)
         self.K = self.kernel(self.X, self.X) * self.y[:, np.newaxis] * self.y
 
