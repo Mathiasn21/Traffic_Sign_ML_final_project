@@ -8,7 +8,7 @@ from keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
 from keras.models import Sequential
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import accuracy_score
 data = []
 labels = []
 classes = 43
@@ -103,7 +103,7 @@ X_test = np.array(data)
 pred = model.predict(X_test)
 
 # Accuracy with the test data
-from sklearn.metrics import accuracy_score
+
 
 print(accuracy_score(labels, pred))
 
