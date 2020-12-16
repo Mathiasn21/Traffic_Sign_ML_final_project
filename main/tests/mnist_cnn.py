@@ -19,7 +19,7 @@ def train_cnn():
     cnn.add(MaxPool2d())
     cnn.add(Dense(num_labels, 'softmax'))
     cnn.fit()
-    joblib.dump(cnn, 'cnn_mnist2.joblib')
+    joblib.dump(cnn, '../source/cnn_mnist2.joblib')
 
 
 def test_cnn(cnn):
@@ -30,8 +30,8 @@ def test_cnn(cnn):
     return {'pred': predictions, 'test_labels': test_labels}
 
 
-mnist_cnn = joblib.load('cnn_mnist.joblib')
-mnist_cnn2 = joblib.load('cnn_mnist2.joblib')
+mnist_cnn = joblib.load('../source/cnn_mnist.joblib')
+mnist_cnn2 = joblib.load('../source/cnn_mnist2.joblib')
 
 res = test_cnn(mnist_cnn)
 res2 = test_cnn(mnist_cnn2)

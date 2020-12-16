@@ -6,7 +6,7 @@ from keras.utils import to_categorical
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-from data_processing import signs
+from data_loading import signs
 
 data, labels = signs.training_data_grayscale()
 classes = 43
@@ -32,8 +32,10 @@ model.add(Dense(classes, activation='softmax'))
 # Compile CNN
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
+# Train model
 epochs = 16
 history = model.fit(x_train, y_train, batch_size=32, epochs=epochs, validation_data=(x_test, y_test))
+# model.save("D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_6.h5")
 
 # plotting graphs of accuracy and loss
 plt.figure(0)
@@ -54,7 +56,10 @@ plt.ylabel('loss')
 plt.legend()
 plt.show()
 
+# Load test data from source
 test_data, test_labels = signs.test_data_greyscale()
+
+# Predict classes from test data and get predicted classes
 pred = np.argmax(model.predict(test_data), axis=-1)
 
 # Check accuracy with the test data
