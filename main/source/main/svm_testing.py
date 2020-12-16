@@ -1,7 +1,7 @@
+import joblib
 import numpy as np
-from sklearn import datasets
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.svm import SVC
 
 from data_processing import signs
@@ -20,13 +20,17 @@ def search_params(train_x, train_y):
 
 
 x_features, y_targets = signs.training_data_grayscale()
+x_features = (x_features[:, :, 0] / 255) - 0.5
 n = len(x_features)
 x_features = x_features.reshape((n, -1))
 
 x_train, x_test, y_train, y_test = train_test_split(x_features, y_targets, test_size=0.2)
 
-best_svc = SVC(C=2.0, gamma=0.0001, kernel='rbf', verbose=True)
+best_svc = SVC(C=8.0, gamma=0.0001, kernel='rbf', verbose=True)
 best_svc.fit(x_train, y_train)
 svc_predictions = best_svc.predict(x_test)
+
+joblib.dump(best_svc, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\svm_1.joblib')
+best_svc = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\svm_1.joblib')
 
 print('Classification report: ', classification_report(y_test, svc_predictions), '\n')
