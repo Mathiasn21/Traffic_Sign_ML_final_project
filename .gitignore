@@ -278,3 +278,4 @@ fabric.properties
 
 main/source/models/svm_1.joblib
 main/source/models/svm_1.joblib
+*.joblib

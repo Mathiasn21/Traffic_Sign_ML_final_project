@@ -1,3 +1,4 @@
+import keras
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
@@ -12,21 +13,23 @@ data, labels = signs.training_data_grayscale()
 classes = 43
 
 # Splitting data into training and test data. Does shuffle before split in order to increase randomness in the data.
-x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=21)
 
-# Convert labels into one hot encoding
+# Convert labels into binary class matrix
 y_train = to_categorical(y_train, classes)
 y_test = to_categorical(y_test, classes)
 
 # Build CNN model
 model = Sequential()
-model.add(Conv2D(filters=32, kernel_size=(5, 5), activation='relu', input_shape=x_train.shape[1:]))
+model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', input_shape=x_train.shape[1:]))
 model.add(MaxPool2D(pool_size=(2, 2)))
 model.add(Dropout(.25))
-model.add(Conv2D(filters=64, kernel_size=(3, 3), activation='relu'))
 model.add(Conv2D(filters=128, kernel_size=(3, 3), activation='relu'))
+model.add(Conv2D(filters=256, kernel_size=(3, 3), activation='relu'))
 model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(.5))
 model.add(Flatten())
+model.add(Dense(256, activation='relu'))
 model.add(Dense(classes, activation='softmax'))
 
 # Compile CNN
