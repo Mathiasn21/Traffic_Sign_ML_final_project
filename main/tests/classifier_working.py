@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+
 data = []
 labels = []
 classes = 43
