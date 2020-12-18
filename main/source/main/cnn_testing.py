@@ -1,10 +1,9 @@
-import keras
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
 from keras.models import Sequential
 from keras.utils import to_categorical
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 
 from data_loading import signs
@@ -21,7 +20,7 @@ y_test = to_categorical(y_test, classes)
 
 # Build CNN model
 model = Sequential()
-model.add(Conv2D(filters=32, kernel_size=(3, 3), activation='relu', input_shape=x_train.shape[1:]))
+model.add(Conv2D(filters=32, kernel_size=(5, 5), activation='relu', input_shape=x_train.shape[1:]))
 model.add(MaxPool2D(pool_size=(2, 2)))
 model.add(Dropout(.25))
 model.add(Conv2D(filters=128, kernel_size=(3, 3), activation='relu'))
@@ -59,6 +58,8 @@ plt.ylabel('loss')
 plt.legend()
 plt.show()
 
+# model = keras.models.load_model('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_6.h5')
+
 # Load test data from source
 test_data, test_labels = signs.test_data_greyscale()
 
@@ -67,3 +68,5 @@ pred = np.argmax(model.predict(test_data), axis=-1)
 
 # Check accuracy with the test data
 print(classification_report(test_labels, pred))
+
+conf_matrix = confusion_matrix(test_labels, pred)
