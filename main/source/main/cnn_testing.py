@@ -38,7 +38,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 # Train model
 epochs = 16
 history = model.fit(x_train, y_train, batch_size=32, epochs=epochs, validation_data=(x_test, y_test))
-# model.save("D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_6.h5")
+model.save("D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_7.h5")
 
 # plotting graphs of accuracy and loss
 plt.figure(0)
