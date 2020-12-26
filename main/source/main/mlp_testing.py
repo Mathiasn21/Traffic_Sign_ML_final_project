@@ -26,11 +26,10 @@ x_train = scalar.transform(x_train)
 scalar.fit(x_test)
 x_test = scalar.transform(x_test)
 
-
-#mlp = MLPClassifier(hidden_layer_sizes=(64, 50, 43), max_iter=1000)
-#mlp.fit(x_train, y_train.ravel())
-#predictions = mlp.predict(x_test)
-#print(classification_report(y_test, predictions))
+# mlp = MLPClassifier(hidden_layer_sizes=(64, 50, 43), max_iter=1000)
+# mlp.fit(x_train, y_train.ravel())
+# predictions = mlp.predict(x_test)
+# print(classification_report(y_test, predictions))
 
 
 tot_layers = 10
@@ -41,6 +40,7 @@ best_nodes_pr_layer = []
 
 results_3D = []
 test_size = len(y_test)
+
 
 def execute_mlp(args):
     global best_avg
@@ -92,4 +92,3 @@ ax.set_ylabel('Neurons')
 ax.set_zlabel('Accuracy')
 color_bar.set_label('Time')
 plt.show()
-

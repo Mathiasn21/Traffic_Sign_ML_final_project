@@ -22,7 +22,7 @@ best_svc = SVC(C=2.1, gamma=0.0001, kernel='rbf')
 best_svc.fit(x_train, y_train)
 svc_predictions = best_svc.predict(x_test)
 
-joblib.dump(best_svc, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\svm_6_rbf.joblib')
+joblib.dump(best_svc, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_1.joblib')
 # best_svc = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\svm_1.joblib')
 
 print('Classification report: ', classification_report(y_test, svc_predictions), '\n')
