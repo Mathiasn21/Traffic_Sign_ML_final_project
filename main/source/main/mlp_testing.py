@@ -26,12 +26,6 @@ x_train = scalar.transform(x_train)
 scalar.fit(x_test)
 x_test = scalar.transform(x_test)
 
-# mlp = MLPClassifier(hidden_layer_sizes=(64, 50, 43), max_iter=1000)
-# mlp.fit(x_train, y_train.ravel())
-# predictions = mlp.predict(x_test)
-# print(classification_report(y_test, predictions))
-
-
 tot_layers = 10
 tot_nodes = 200
 
