@@ -18,9 +18,6 @@ test_data, test_labels = signs.test_data_greyscale()
 
 # Predict classes from test data and get predicted classes
 pred = np.argmax(model.predict(test_data), axis=-1)
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
-pd.set_option('display.width', 300)
 
 # Check accuracy with the test data
 print(classification_report(test_labels, pred))
@@ -39,9 +36,16 @@ x_test = scalar.transform(x_test)
 mlp: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_1.joblib')
 mlp2: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_2.joblib')
 mlp3: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_3.joblib')
+
+# Try to predict traffic sign given test data
 predictions = mlp.predict(x_test)
 
 print(classification_report(test_labels, predictions))
+
+# Set settings to ensure no truncation when printing the dataframe, from confusion matrix
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 300)
 print(pd.DataFrame(confusion_matrix(test_labels, predictions)))
 
 plt.figure(0)
