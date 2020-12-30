@@ -9,9 +9,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from data_loading import signs
 
-# Load test data from source
+# Load training data from source
 data, labels = signs.training_data_grayscale()
-classes = 43
+classes = 43  # Total number of traffic sign classes
 
 # Splitting data into training and test data. Does shuffle before split in order to increase randomness in the data.
 # Specifying the random state allows for reproducibility.
@@ -51,20 +51,25 @@ def build_models_diff_activations():
     return model_array, act_names
 
 
-# Function to train CNN models, where each conv2d layer has varying activation functions
 def train_models(models, activation_names):
     """
+    Function to train CNN models, where each conv2d layer has varying activation functions
     :param activation_names: object - Array consisting of activation function names.
-    :type models: object - Array consisting of CNN models.
+    :param models: object - Array consisting of CNN models.
     """
     epochs = 16
+
+    # Load test data from source
     test_data, test_labels = signs.test_data_greyscale()
+
+    # Array utilized for storing histories gotten from fitting a CNN model.
     histories = []
 
     for i, model in enumerate(models):
+        # Fit the CNN model using training data and labels.
         history = model.fit(x_train, y_train, batch_size=32, epochs=epochs, validation_data=(X_test, y_test))
-        pred = np.argmax(model.predict(test_data), axis=-1)
-        histories.append(history)
+        pred = np.argmax(model.predict(test_data), axis=-1)  # Select highest probability for all classifications
+        histories.append(history)  # Append new history stats to the histories array
 
         # Check accuracy with the test data
         print(accuracy_score(test_labels, pred))
