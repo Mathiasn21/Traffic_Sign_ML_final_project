@@ -47,7 +47,6 @@ def build_models_diff_activations():
         model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
         model_array.append(model)
-
     return model_array, act_names
 
 
@@ -71,12 +70,12 @@ def train_models(models, activation_names):
         pred = np.argmax(model.predict(test_data), axis=-1)  # Select highest probability for all classifications
         histories.append(history)  # Append new history stats to the histories array
 
-        # Check accuracy with the test data
+        # Check accuracy with test data
         print(accuracy_score(test_labels, pred))
 
     plt.figure(0)
     for i, hist in enumerate(histories):
-        # plotting graphs of accuracy and loss
+        # plotting graphs of accuracy score from the various activation functions
         plt.plot(hist.history['accuracy'], label='training accuracy ' + activation_names[i])
 
     plt.title('Accuracy')
@@ -87,6 +86,7 @@ def train_models(models, activation_names):
 
     plt.figure(1)
     for i, hist in enumerate(histories):
+        # plotting graphs of loss from the various activation functions
         plt.plot(hist.history['loss'], label='training loss ' + activation_names[i])
     plt.title('Loss')
     plt.xlabel('epochs')
@@ -95,5 +95,6 @@ def train_models(models, activation_names):
     plt.show()
 
 
+# Build CNN models then train and display data from them.
 models, activation_names = build_models_diff_activations()
 train_models(models, activation_names)

@@ -8,10 +8,12 @@ from sklearn.model_selection import train_test_split
 
 from data_loading import signs
 
+# Load training data from source
 data, labels = signs.training_data_grayscale()
-classes = 43
+classes = 43  # Total number of traffic sign classes
 
 # Splitting data into training and test data. Does shuffle before split in order to increase randomness in the data.
+# Specifying the random state allows for reproducibility.
 x_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
 
 # Convert labels into one hot encoding
@@ -19,10 +21,12 @@ y_train = to_categorical(y_train, classes)
 y_test = to_categorical(y_test, classes)
 
 
+# Function to build and compile CNN models, varying the dropout value
 def build_models_diff_dropouts():
-    models = []
-    dropout_percentages = [.15, .25, .5]
+    models = []  # Array utilized for storing compiled CNN models
+    dropout_percentages = [.15, .25, .5]  # Array containing various dropout values
 
+    # Build and compile CNN models with different values for the dropout layer
     for percentage in dropout_percentages:
         # Build CNN models
         model = Sequential()
@@ -39,21 +43,29 @@ def build_models_diff_dropouts():
 
 
 def train_models(models, percentages):
+    """
+    Function to train CNN models, where each conv2d layer has varying activation functions
+    :param percentages: object - Array consisting of various dropout values.
+    :param models: object - Array consisting of CNN models.
+    """
     epochs = 16
+
+    # Load test data from source
     test_data, test_labels = signs.test_data_greyscale()
     histories = []
 
     for i, model in enumerate(models):
+        # Fit the CNN model using training data and labels.
         history = model.fit(x_train, y_train, batch_size=32, epochs=epochs, validation_data=(X_test, y_test))
-        pred = np.argmax(model.predict(test_data), axis=-1)
-        histories.append(history)
+        pred = np.argmax(model.predict(test_data), axis=-1)  # Select highest probability for all classifications
+        histories.append(history)  # Append new history stats to the histories array
 
-        # Check accuracy with the test data
+        # Check accuracy with test data
         print(accuracy_score(test_labels, pred))
 
     plt.figure(0)
     for i, hist in enumerate(histories):
-        # plotting graphs of accuracy and loss
+        # plotting graphs of loss from the various dropout values
         plt.plot(hist.history['accuracy'], label='training accuracy - Dropout: {}'.format(percentages[i]))
 
     plt.title('Accuracy')
@@ -64,6 +76,7 @@ def train_models(models, percentages):
 
     plt.figure(1)
     for i, hist in enumerate(histories):
+        # plotting graphs of loss from the various dropout values
         plt.plot(hist.history['loss'], label='training loss - Dropout: {}'.format(percentages[i]))
     plt.title('Loss')
     plt.xlabel('epochs')
@@ -72,5 +85,6 @@ def train_models(models, percentages):
     plt.show()
 
 
+# Build CNN models then train and display data from them.
 models, dropout_percentages = build_models_diff_dropouts()
 train_models(models, dropout_percentages)
