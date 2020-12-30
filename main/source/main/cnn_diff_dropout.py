@@ -19,7 +19,7 @@ y_train = to_categorical(y_train, classes)
 y_test = to_categorical(y_test, classes)
 
 
-def build_models_diff_activations():
+def build_models_diff_dropouts():
     models = []
     dropout_percentages = [.15, .25, .5]
 
@@ -72,5 +72,5 @@ def train_models(models, percentages):
     plt.show()
 
 
-models, dropout_percentages = build_models_diff_activations()
+models, dropout_percentages = build_models_diff_dropouts()
 train_models(models, dropout_percentages)

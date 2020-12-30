@@ -13,8 +13,12 @@ scalar = StandardScaler()
 scalar.fit(x_train)
 x_train = scalar.transform(x_train)
 
-mlp = MLPClassifier(hidden_layer_sizes=(150, 110, 43), max_iter=1000, learning_rate_init=.0001, activation='relu')
+mlp = MLPClassifier(solver='adam',
+                    hidden_layer_sizes=(150, 110, 43),
+                    max_iter=1000,
+                    learning_rate_init=.0001,
+                    activation='relu')
+
 mlp.fit(x_train, y_train.ravel())
 
-
-joblib.dump(mlp, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_1.joblib')
+joblib.dump(mlp, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_3.joblib')

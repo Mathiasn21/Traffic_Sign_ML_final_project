@@ -24,8 +24,8 @@ def build_models_diff_optimizers():
     opt_names = ['Adam', 'SGD', 'RMSprop', 'Adadelta']
     model_array = []
 
+    # Build CNN models, varying the optimizer
     for optimizer in optimizer_arr:
-        # Build CNN models
         model = Sequential()
         model.add(Conv2D(filters=32, kernel_size=(5, 5), activation='relu', input_shape=x_train.shape[1:]))
         model.add(MaxPool2D(pool_size=(2, 2)))

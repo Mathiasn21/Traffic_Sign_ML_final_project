@@ -2,7 +2,6 @@ import time
 
 import joblib
 from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
 from data_loading import signs
@@ -23,7 +22,7 @@ best_svc.fit(x_train, y_train)
 svc_predictions = best_svc.predict(x_test)
 
 joblib.dump(best_svc, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_1.joblib')
-# best_svc = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\svm_1.joblib')
+# best_mlp = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\.joblib')
 
 print('Classification report: ', classification_report(y_test, svc_predictions), '\n')
 print('End time: ', time.time() - start_time, '\n')

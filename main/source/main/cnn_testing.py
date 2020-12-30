@@ -1,10 +1,9 @@
-import keras
 import matplotlib.pyplot as plt
 import numpy as np
 from keras.layers import Conv2D, MaxPool2D, Dense, Flatten, Dropout
 from keras.models import Sequential
 from keras.utils import to_categorical
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
 from data_loading import signs
@@ -70,4 +69,3 @@ pred = np.argmax(model.predict(test_data), axis=-1)
 # Check accuracy with the test data
 print(classification_report(test_labels, pred))
 
-conf_matrix = confusion_matrix(test_labels, pred)

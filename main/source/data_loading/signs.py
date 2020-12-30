@@ -13,7 +13,10 @@ classes = 43
 data_path = "C:\\Users\\Nilse\\Desktop\\archive"
 
 
-def training_data_grayscale():
+def training_data_grayscale(grayscale=True):
+    """
+    :type grayscale: bool - Converts images to grayscale or not
+    """
     # Retrieving the images and their labels
     for i in range(classes):
         path = os.path.join(data_path, 'Train', str(i))
@@ -22,7 +25,9 @@ def training_data_grayscale():
         for a in images:
             try:
                 # Open image location and convert to grayscale
-                image: Image = Image.open(path + '\\' + a).convert('LA')
+                image: Image = Image.open(path + '\\' + a)
+                if grayscale:
+                    image = image.convert('LA')
                 image = image.resize((30, 30))
                 image = np.array(image)
                 training_images.append(image)
@@ -52,12 +57,18 @@ def training_data():
     return np.array(training_images), np.array(training_labels)
 
 
-def test_data_greyscale():
+def test_data_greyscale(grayscale=True):
+    """
+    :type grayscale: bool - Converts images to grayscale or not
+    """
     y_test = pd.read_csv('C:\\Users\\Nilse\\Desktop\\archive\\Test.csv')
     labels = y_test["ClassId"].values
     images = "C:\\Users\\Nilse\\Desktop\\archive\\" + y_test["Path"].values
     for img in images:
-        image = Image.open(img).convert('LA')
+        image = Image.open(img)
+        if grayscale:
+            image = image.convert('LA')
+
         image = image.resize((30, 30))
         image = np.array(image)
 
