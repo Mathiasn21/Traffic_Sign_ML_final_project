@@ -18,7 +18,7 @@ scalar.fit(x_train)
 # Scale the dataset by centering and scaling
 x_train = scalar.transform(x_train)
 
-# Build MLP classifier model 1
+# Build MLP classifier model 1 - With solver adam and learning rate .0001
 mlp = MLPClassifier(solver='adam',
                     hidden_layer_sizes=(150, 110, 43),
                     max_iter=1000,
@@ -32,7 +32,7 @@ mlp.fit(x_train, y_train.ravel())
 joblib.dump(mlp, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_adam_best.joblib')
 
 
-# Build MLP classifier model 2
+# Build MLP classifier model 2 - With solver sgd and learning rate .01
 mlp = MLPClassifier(solver='sgd',
                     hidden_layer_sizes=(150, 110, 43),
                     max_iter=1000,
@@ -46,7 +46,7 @@ mlp.fit(x_train, y_train.ravel())
 joblib.dump(mlp, 'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_sgd.joblib')
 
 
-# Build MLP classifier model 3
+# Build MLP classifier model 3 - With solver adam and learning rate .01
 mlp = MLPClassifier(solver='adam',
                     hidden_layer_sizes=(150, 110, 43),
                     max_iter=1000,

@@ -55,7 +55,7 @@ scalar.fit(x_test)
 x_test = scalar.transform(x_test)
 
 # Load pre saved best MLP model
-mlp: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_best.joblib')
+mlp: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_adam_best.joblib')
 
 # Try to predict traffic sign given test data
 predictions = mlp.predict(x_test)
