@@ -39,7 +39,7 @@ epochs = 16
 history = model.fit(x_train, y_train, batch_size=32, epochs=epochs, validation_data=(x_test, y_test))
 
 # Save model onto disk
-model.save("D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_7.h5")
+model.save("D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_best.h5")
 
 # plotting graphs of accuracy and loss
 plt.figure(0)
@@ -60,7 +60,7 @@ plt.ylabel('loss')
 plt.legend()
 plt.show()
 
-# model = keras.models.load_model('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_6.h5')
+# model = keras.models.load_model('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_best.h5')
 
 # Load test data from source
 test_data, test_labels = signs.test_data()

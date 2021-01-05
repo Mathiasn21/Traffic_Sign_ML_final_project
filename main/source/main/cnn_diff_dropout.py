@@ -63,6 +63,7 @@ def train_models(models, percentages):
         # Check accuracy with test data
         print(accuracy_score(test_labels, pred))
 
+    # Create figure 0
     plt.figure(0)
     for i, hist in enumerate(histories):
         # plotting graphs of loss from the various dropout values
@@ -74,6 +75,7 @@ def train_models(models, percentages):
     plt.legend()
     plt.show()
 
+    # Create figure 1
     plt.figure(1)
     for i, hist in enumerate(histories):
         # plotting graphs of loss from the various dropout values

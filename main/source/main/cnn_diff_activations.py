@@ -73,6 +73,7 @@ def train_models(models, activation_names):
         # Check accuracy with test data
         print(accuracy_score(test_labels, pred))
 
+    # Create figure 0
     plt.figure(0)
     for i, hist in enumerate(histories):
         # plotting graphs of accuracy score from the various activation functions
@@ -84,6 +85,7 @@ def train_models(models, activation_names):
     plt.legend()
     plt.show()
 
+    # Create figure 1
     plt.figure(1)
     for i, hist in enumerate(histories):
         # plotting graphs of loss from the various activation functions
@@ -95,6 +97,6 @@ def train_models(models, activation_names):
     plt.show()
 
 
-# Build CNN models then train and display data from them.
+# Build CNN models with different activation functions, then train and display data from them.
 models, activation_names = build_models_diff_activations()
 train_models(models, activation_names)

@@ -98,10 +98,12 @@ img = ax.scatter(results_3D[:, 0], results_3D[:, 1], results_3D[:, 2],
                  c=normal__time_res, cmap=plt.hot())
 color_bar = fig.colorbar(img)
 
-# Set information labels
+# Set information labels on axes
 ax.set_xlabel('Layers')
 ax.set_ylabel('Neurons')
 ax.set_zlabel('Accuracy')
+
+# Set information label on colorbar
 color_bar.set_label('Time')
 
 # Render figure
