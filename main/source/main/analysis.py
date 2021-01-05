@@ -51,7 +51,7 @@ x_test = x_test.reshape((n, -1))
 
 # Computes mean and std - used later for scaling the dataset
 scalar.fit(x_test)
-# Scale the dataset by centering and scaling
+# Scales the dataset by centering and scaling
 x_test = scalar.transform(x_test)
 
 # Load pre saved best MLP model
