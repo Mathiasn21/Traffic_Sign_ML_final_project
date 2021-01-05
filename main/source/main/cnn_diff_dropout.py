@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from data_loading import signs
 
 # Load training data from source
-data, labels = signs.training_data_grayscale()
+data, labels = signs.training_data()
 classes = 43  # Total number of traffic sign classes
 
 # Splitting data into training and test data. Does shuffle before split in order to increase randomness in the data.
@@ -51,7 +51,7 @@ def train_models(models, percentages):
     epochs = 16
 
     # Load test data from source
-    test_data, test_labels = signs.test_data_greyscale()
+    test_data, test_labels = signs.test_data()
     histories = []
 
     for i, model in enumerate(models):
@@ -86,5 +86,5 @@ def train_models(models, percentages):
 
 
 # Build CNN models then train and display data from them.
-models, dropout_percentages = build_models_diff_dropouts()
-train_models(models, dropout_percentages)
+models, drop_percentages = build_models_diff_dropouts()
+train_models(models, drop_percentages)

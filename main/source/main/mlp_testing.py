@@ -10,14 +10,14 @@ from sklearn.preprocessing import StandardScaler
 from data_loading import signs
 
 # Load training data in grayscale and corresponding labels
-x_train, y_train = signs.training_data_grayscale()
+x_train, y_train = signs.training_data()
 x_train = x_train[:, :, :, 0]  # Selects only the grey column for each x => Decreased training time and less data
 n = len(x_train)  # Total images
 # Flatten image values
 x_train = x_train.reshape((n, -1))
 
 # Load test data in grayscale and corresponding labels
-x_test, y_test = signs.test_data_greyscale()
+x_test, y_test = signs.test_data()
 x_test = x_test[:, :, :, 0]  # Selects only the grey column for each x => Decreased training time and less data
 n = len(x_test)  # Total images
 # Flatten image values

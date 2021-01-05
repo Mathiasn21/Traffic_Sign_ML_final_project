@@ -19,7 +19,7 @@ model: Sequential = keras.models.load_model(
     'D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\cnn_model_best.h5')
 
 # Load test data from source
-test_data, test_labels = signs.test_data_greyscale()
+test_data, test_labels = signs.test_data()
 
 # Predict classes from test data and get predicted classes
 pred = np.argmax(model.predict(test_data), axis=-1)

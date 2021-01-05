@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from data_loading import signs
 
 # Load training data from source
-data, labels = signs.training_data_grayscale()
+data, labels = signs.training_data()
 classes = 43  # Total number of traffic sign classes
 
 # Splitting data into training and test data. Does shuffle before split in order to increase randomness in the data.
@@ -59,7 +59,7 @@ def train_models(models, activation_names):
     epochs = 16
 
     # Load test data from source
-    test_data, test_labels = signs.test_data_greyscale()
+    test_data, test_labels = signs.test_data()
 
     # Array utilized for storing histories gotten from fitting a CNN model.
     histories = []

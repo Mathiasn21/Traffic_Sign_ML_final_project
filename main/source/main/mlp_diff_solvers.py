@@ -7,7 +7,7 @@ mlp_adam_best: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-lea
 mlp_sgd: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_sgd.joblib')
 mlp_adam_worst: MLPClassifier = joblib.load('D:\\group_projects\\Sign-machine-learning\\main\\source\\models\\mlp_adam_worst.joblib')
 
-# Plot various loss curves from models with different solvers.
+# Plot various loss curves from models with different solvers and learning rate.
 plt.plot(mlp_adam_best.loss_curve_, label='Adam - Learning rate 0.0001')
 plt.plot(mlp_sgd.loss_curve_, label='SGD - Learning rate 0.01')
 plt.plot(mlp_adam_worst.loss_curve_, label='Adam - Learning rate 0.01')
